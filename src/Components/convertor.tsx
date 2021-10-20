@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../Styles/Convertor.scss'
+import Spinner from '../Modules/Spinner'
 
 interface Currency {
     currency_name: string
@@ -26,6 +27,7 @@ function Convertor() {
     const [currTo, setCurrTo] = useState<CurrencyToAndFrom>({ 'name': 'Euro', 'curr': 'EUR' })
     const [amount, setAmount] = useState(Number)
     const [rate, setRate] = useState<Rate>({ "quotecurrency": '', "mid": 0 })
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         axios.get('https://xecdapi.xe.com/v1/currencies', {
@@ -71,6 +73,7 @@ function Convertor() {
 
     const handleConvert = (e: any) => {
         e.preventDefault()
+        setLoading(true)
         axios.get(`https://xecdapi.xe.com/v1/convert_from.json/?from=${currFrom.curr}&to=${currTo.curr}&amount=${amount}&decimal_places=4`, {
             auth: {
                 username: "freelancer21981605",
@@ -81,6 +84,9 @@ function Convertor() {
         }).catch(err => {
             console.log(err);
         })
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000)
     }
 
     const handleToSelect = (e: any) => {
@@ -121,13 +127,15 @@ function Convertor() {
             <div className="convertor-section">
                 <button type='button' onClick={(e) => handleConvert(e)} disabled={amount > 0 ? false : true}>{amount ? "Convert" : "..." }</button>
                 <div className="convertor-section-rate">
-                    {rate && (
+                    {!loading ? (
                         <>
                             <p>{amount.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span>{`${currFrom.name} = `}</span></p>
                             {" "}
-                            <p>{rate.mid.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,') }<span>{`${currTo.name}`}</span></p>
+                            <p>{rate.mid.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span>{`${currTo.name}`}</span></p>
                         </>
-                    )
+                    ) : (
+                      <Spinner />
+                        )
                     }
                 </div>
             </div>

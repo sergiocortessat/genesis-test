@@ -43,13 +43,12 @@
     width: 80%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     margin-top: 20px;
+    align-items: center;
 
     button {
       width: 120px;
-      height: 50px;
+      height: 60px;
       margin-bottom: 20px;
       background-color: rgb(152, 93, 175);
       color: black;
@@ -93,6 +92,7 @@
 
   .convertor-section {
     flex-direction: row !important;
+    align-items: normal !important;
 
     button {
       margin-right: 20px !important;
