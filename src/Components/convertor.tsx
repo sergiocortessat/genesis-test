@@ -36,6 +36,7 @@ function Convertor() {
                             if (obj.currency_name === 'Euro') return { ...obj, flag: countries[97].flag }
                             else if (!flagFound) return { ...obj, flag: '' }
                             else if (flagFound) return { ...obj, flag: flagFound.flag }
+                            return currenciesWithFlags
                         })
 
 
@@ -90,7 +91,7 @@ function Convertor() {
         <div className="convertor">
             <div className="convertor-form">
                 <form>
-                    <input type="number" placeholder=" amount" onChange={(e) => handleInputChange(e.target.value)} />
+                    <input type="number" step='0.01' placeholder=" amount" onChange={(e) => handleInputChange(e.target.value)} />
                     <select onChange={(e) => handleToSelect(e.target.value)}>
                         {currencies.map((currency: any) => {
                             return <option key={currency.iso} selected={currency.iso === "USD" ? true : false} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency['currency_name']}`}</option>
@@ -104,13 +105,13 @@ function Convertor() {
                 </form>
             </div>
             <div className="convertor-section">
-                <button type='button' onClick={(e) => handleConvert(e)} disabled={amount > 0 ? false : true}>Convert</button>
+                <button type='button' onClick={(e) => handleConvert(e)} disabled={amount > 0 ? false : true}>{amount ? "Convert" : "..." }</button>
                 <div className="convertor-section-rate">
                     {rate && (
                         <>
-                            <p>{amount}<span>{`${currFrom.name} = `}</span></p>
+                            <p>{amount.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span>{`${currFrom.name} = `}</span></p>
                             {" "}
-                            <p>{rate.mid }<span>{`${currTo.name}`}</span></p>
+                            <p>{rate.mid.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,') }<span>{`${currTo.name}`}</span></p>
                         </>
                     )
                     }
