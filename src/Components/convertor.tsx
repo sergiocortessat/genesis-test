@@ -2,13 +2,30 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../Styles/Convertor.scss'
 
+interface Currency {
+    currency_name: string
+    is_obsolete: boolean
+    iso: string
+    flag: string
+  }
+
+  interface Rate {
+    'quotecurrency' : string
+    'mid' : Number
+  }
+
+  interface CurrencyToAndFrom {
+      "name": string
+      "curr": string
+  }
+
 
 function Convertor() {
-    const [currencies, setCurrencies] = useState([]);
-    const [currFrom, setCurrFrom] = useState({ "name": "United states dollar", "curr": "USD" })
-    const [currTo, setCurrTo] = useState({ 'name': 'Euro', 'curr': 'EUR' })
+    const [currencies, setCurrencies] = useState<Currency[] | []>([]);
+    const [currFrom, setCurrFrom] = useState<CurrencyToAndFrom>({ "name": "United states dollar", "curr": "USD" })
+    const [currTo, setCurrTo] = useState<CurrencyToAndFrom>({ 'name': 'Euro', 'curr': 'EUR' })
     const [amount, setAmount] = useState(Number)
-    const [rate, setRate] = useState({ "quotecurrency": String, "mid": 0 })
+    const [rate, setRate] = useState<Rate>({ "quotecurrency": '', "mid": 0 })
 
     useEffect(() => {
         axios.get('https://xecdapi.xe.com/v1/currencies', {
@@ -17,24 +34,24 @@ function Convertor() {
                 password: 'tl6tq02poabhq75a3rgsk6mo2v'
             }
         })
-            .then((resp: any) => {
-                let currencies: [] = resp.data.currencies
+            .then((resp:any) => {
+                const currencies = resp.data.currencies;
                 axios.get('https://restcountries.com/v3.1/all')
                     .then((resp) => {
                         const countries: any = resp.data
 
                         // Map over the currencies, and match their respective ISO code to the country ISO in the REST Countries API,
                         // then return the currency object along with the flag image url. No flag means a placeholder is added.
-                        let currenciesWithFlags: any = currencies.map((obj: any) => {
+                        let currenciesWithFlags: any = currencies.map((obj: Currency) => {
 
-                            let flagFound: any = countries.find((country: any) => {
+                            let flagFound = countries.find((country: {currencies: {}}) => {
                                 if (country.currencies) return Object.keys(country.currencies)[0] === obj.iso
                                 return ""
                             })
 
                             if (obj.currency_name === 'US Dollar') return { ...obj, flag: countries[108].flag }
                             if (obj.currency_name === 'Euro') return { ...obj, flag: countries[97].flag }
-                            else if (!flagFound) return { ...obj, flag: '' }
+                            else if (!flagFound) return { ...obj, flag: '.......' }
                             else if (flagFound) return { ...obj, flag: flagFound.flag }
                             return currenciesWithFlags
                         })
@@ -61,7 +78,7 @@ function Convertor() {
                 username: "freelancer21981605",
                 password: 'tl6tq02poabhq75a3rgsk6mo2v'
             }
-        }).then((resp: any) => {
+        }).then((resp:any) => {
             // setRate(res.data.to)
             setRate(resp.data.to[0]);
         }).catch(err => {
@@ -72,28 +89,28 @@ function Convertor() {
     const handleToSelect = (e: any) => {
         const [curr, name] = e.split(',');
         setCurrFrom({ "name": name, 'curr': curr })
-        setRate({ "quotecurrency": String, "mid": 0 })
+        setRate({ "quotecurrency": '', "mid": 0 })
 
     }
 
     const handleFromSelect = (e: any) => {
         const [curr, name] = e.split(',');
         setCurrTo({ "name": name, 'curr': curr })
-        setRate({ "quotecurrency": String, "mid": 0 })
+        setRate({ "quotecurrency": '', "mid": 0 })
 
     }
 
     const handleInputChange = (e: any) => {
         setAmount(Number(e))
-        setRate({ "quotecurrency": String, "mid": 0 })
+        setRate({ "quotecurrency": '', "mid": 0 })
     }
     return (
         <div className="convertor">
             <div className="convertor-form">
                 <form>
-                    <input type="number" step='0.01' placeholder=" amount" onChange={(e) => handleInputChange(e.target.value)} />
+                    <input type="number" placeholder=" amount" min="1" step="any"onChange={(e) => handleInputChange(e.target.value)} />
                     <select onChange={(e) => handleToSelect(e.target.value)}>
-                        {currencies.map((currency: any) => {
+                        {currencies.map((currency:any) => {
                             return <option key={currency.iso} selected={currency.iso === "USD" ? true : false} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency['currency_name']}`}</option>
                         })}
                     </select>
