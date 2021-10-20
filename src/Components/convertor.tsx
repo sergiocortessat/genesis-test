@@ -51,7 +51,7 @@ function Convertor() {
 
                             if (obj.currency_name === 'US Dollar') return { ...obj, flag: countries[108].flag }
                             if (obj.currency_name === 'Euro') return { ...obj, flag: countries[97].flag }
-                            else if (!flagFound) return { ...obj, flag: '.......' }
+                            else if (!flagFound) return { ...obj, flag: '🇺🇳' }
                             else if (flagFound) return { ...obj, flag: flagFound.flag }
                             return currenciesWithFlags
                         })
@@ -69,17 +69,15 @@ function Convertor() {
             })
     }, []);
 
-
+    console.log(process.env.REACT_APP_API_KEY_USER);
     const handleConvert = (e: any) => {
         e.preventDefault()
-        // console.log("rate");
         axios.get(`https://xecdapi.xe.com/v1/convert_from.json/?from=${currFrom.curr}&to=${currTo.curr}&amount=${amount}&decimal_places=4`, {
             auth: {
                 username: "freelancer21981605",
                 password: 'tl6tq02poabhq75a3rgsk6mo2v'
             }
         }).then((resp:any) => {
-            // setRate(res.data.to)
             setRate(resp.data.to[0]);
         }).catch(err => {
             console.log(err);
@@ -114,7 +112,7 @@ function Convertor() {
                             return <option key={currency.iso} selected={currency.iso === "USD" ? true : false} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency['currency_name']}`}</option>
                         })}
                     </select>
-                    <select defaultValue="Select an option" onChange={(e) => handleFromSelect(e.target.value)}>
+                    <select onChange={(e) => handleFromSelect(e.target.value)}>
                         {currencies.map((currency: any) => {
                             return <option key={currency.iso} selected={currency.iso === "EUR" ? true : false} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency['currency_name']}`}</option>
                         })}
