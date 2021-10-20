@@ -69,7 +69,6 @@ function Convertor() {
             })
     }, []);
 
-    console.log(process.env.REACT_APP_API_KEY_USER);
     const handleConvert = (e: any) => {
         e.preventDefault()
         axios.get(`https://xecdapi.xe.com/v1/convert_from.json/?from=${currFrom.curr}&to=${currTo.curr}&amount=${amount}&decimal_places=4`, {
@@ -106,7 +105,7 @@ function Convertor() {
         <div className="convertor">
             <div className="convertor-form">
                 <form>
-                    <input type="number" placeholder=" amount" min="1" step="any"onChange={(e) => handleInputChange(e.target.value)} />
+                    <input type="number" placeholder=" Amount" min="1" step="any"onChange={(e) => handleInputChange(e.target.value)} />
                     <select onChange={(e) => handleToSelect(e.target.value)}>
                         {currencies.map((currency:any) => {
                             return <option key={currency.iso} selected={currency.iso === "USD" ? true : false} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency['currency_name']}`}</option>
