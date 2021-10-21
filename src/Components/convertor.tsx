@@ -30,11 +30,14 @@ function Convertor () {
   const [rate, setRate] = useState<Rate>({ quotecurrency: '', mid: 0 })
   const [loading, setLoading] = useState(false)
 
+  const { REACT_APP_API_KEY_USER } = process.env
+  const { REACT_APP_API_KEY_PASSWORD } = process.env
+
   useEffect(() => {
     axios.get('https://xecdapi.xe.com/v1/currencies', {
       auth: {
-        username: 'freelancer21981605',
-        password: 'tl6tq02poabhq75a3rgsk6mo2v'
+        username: `${REACT_APP_API_KEY_USER}`,
+        password: `${REACT_APP_API_KEY_PASSWORD}`
       }
     })
       .then((resp: any) => {
@@ -77,8 +80,8 @@ function Convertor () {
     setLoading(true)
     axios.get(`https://xecdapi.xe.com/v1/convert_from.json/?from=${currFrom.curr}&to=${currTo.curr}&amount=${amount}&decimal_places=4`, {
       auth: {
-        username: 'freelancer21981605',
-        password: 'tl6tq02poabhq75a3rgsk6mo2v'
+        username: `${REACT_APP_API_KEY_USER}`,
+        password: `${REACT_APP_API_KEY_PASSWORD}`
       }
     }).then((resp: any) => {
       setRate(resp.data.to[0])
@@ -106,6 +109,7 @@ function Convertor () {
     setAmount(Number(e))
     setRate({ quotecurrency: '', mid: 0 })
   }
+
   return (
     <div className="convertor">
       <div className="convertor-form">
