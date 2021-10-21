@@ -8,17 +8,17 @@ interface Currency {
     is_obsolete: boolean
     iso: string
     flag: string
-  }
+}
 
-  interface Rate {
-    'quotecurrency' : string
-    'mid' : Number
-  }
+interface Rate {
+    'quotecurrency': string
+    'mid': Number
+}
 
-  interface CurrencyToAndFrom {
-      "name": string
-      "curr": string
-  }
+interface CurrencyToAndFrom {
+    "name": string
+    "curr": string
+}
 
 
 function Convertor() {
@@ -36,7 +36,7 @@ function Convertor() {
                 password: 'tl6tq02poabhq75a3rgsk6mo2v'
             }
         })
-            .then((resp:any) => {
+            .then((resp: any) => {
                 const currencies = resp.data.currencies;
                 axios.get('https://restcountries.com/v3.1/all')
                     .then((resp) => {
@@ -46,7 +46,7 @@ function Convertor() {
                         // then return the currency object along with the flag image url. No flag means a placeholder is added.
                         let currenciesWithFlags: any = currencies.map((obj: Currency) => {
 
-                            let flagFound = countries.find((country: {currencies: {}}) => {
+                            let flagFound = countries.find((country: { currencies: {} }) => {
                                 if (country.currencies) return Object.keys(country.currencies)[0] === obj.iso
                                 return ""
                             })
@@ -59,7 +59,7 @@ function Convertor() {
                         })
 
 
-                        // Set the currency list for the user to chose from
+                        // Set the currency list for the populated filtered countries with flags
                         setCurrencies(currenciesWithFlags)
                     })
                     .catch((err) => {
@@ -79,7 +79,7 @@ function Convertor() {
                 username: "freelancer21981605",
                 password: 'tl6tq02poabhq75a3rgsk6mo2v'
             }
-        }).then((resp:any) => {
+        }).then((resp: any) => {
             setRate(resp.data.to[0]);
         }).catch(err => {
             console.log(err);
@@ -111,9 +111,9 @@ function Convertor() {
         <div className="convertor">
             <div className="convertor-form">
                 <form>
-                    <input type="number" placeholder=" Amount" min="1" step="any"onChange={(e) => handleInputChange(e.target.value)} />
+                    <input type="number" placeholder=" Amount" min="1" step="any" onChange={(e) => handleInputChange(e.target.value)} />
                     <select onChange={(e) => handleToSelect(e.target.value)}>
-                        {currencies.map((currency:any) => {
+                        {currencies.map((currency: any) => {
                             return <option key={currency.iso} selected={currency.iso === "USD" ? true : false} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency['currency_name']}`}</option>
                         })}
                     </select>
@@ -125,7 +125,7 @@ function Convertor() {
                 </form>
             </div>
             <div className="convertor-section">
-                <button type='button' onClick={(e) => handleConvert(e)} disabled={amount > 0 ? false : true}>{amount ? "Convert" : "..." }</button>
+                <button type='button' onClick={(e) => handleConvert(e)} disabled={amount > 0 ? false : true}>{amount ? "Convert" : "..."}</button>
                 <div className="convertor-section-rate">
                     {!loading ? (
                         <>
@@ -134,8 +134,8 @@ function Convertor() {
                             <p>{rate.mid.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span>{`${currTo.name}`}</span></p>
                         </>
                     ) : (
-                      <Spinner />
-                        )
+                        <Spinner />
+                    )
                     }
                 </div>
             </div>
