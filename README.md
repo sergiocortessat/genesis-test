@@ -34,6 +34,8 @@ This application feature designed for Genesis, helps the users to convert, at cu
 ![TypeScript](https://img.shields.io/badge/Typescript-3776AB?style=for-the-badge&logo=typescript&logoColor=white) <br/>
 ![React](https://img.shields.io/badge/React-092E20?style=for-the-badge&logo=react&logoColor=white) <br/>
 ![Sass](https://img.shields.io/badge/Sass-092E20?style=for-the-badge&logo=sass&logoColor=white) <br/>
+![Netlify](https://img.shields.io/badge/Netlify-092E20?style=for-the-badge&logo=netlify&logoColor=white) <br/>
+![PWA](https://img.shields.io/badge/pwa-092E20?style=for-the-badge&logo=pwas&logoColor=white) <br/>
 
 
 
@@ -45,7 +47,7 @@ This application feature designed for Genesis, helps the users to convert, at cu
 
 ### Built With
 
-* [TYPESCRIPT] [REACT] [XEAPI] [NETLIFY]
+* [TYPESCRIPT] [REACT] [XEAPI] [NETLIFY] [PWA] [SASS]
 
 <br />
 
