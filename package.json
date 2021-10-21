@@ -1,4 +1,5 @@
 {
+  "homepage": "https://currency-exchanger-genesis.netlify.app/",
   "name": "genesis-test",
   "version": "0.1.0",
   "private": true,
