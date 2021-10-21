@@ -43,8 +43,8 @@ function Convertor () {
       .then((resp: any) => {
         const { currencies } = resp.data
         axios.get('https://restcountries.com/v3.1/all')
-          .then((res) => {
-            const countries: any = res.data
+          .then((res:any) => {
+            const countries = res.data
 
             // Map over the currencies, and match their respective ISO
             // code eslint to the country ISO in the REST Countries API,
