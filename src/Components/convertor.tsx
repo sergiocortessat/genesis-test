@@ -76,6 +76,7 @@ function Convertor () {
   }, [])
 
   const handleConvert = (e: any) => {
+    // Once the button is clicked, a convertor API call is triggered with To and From currencyes with amount
     e.preventDefault()
     setLoading(true)
     axios.get(`https://xecdapi.xe.com/v1/convert_from.json/?from=${currFrom.curr}&to=${currTo.curr}&amount=${amount}&decimal_places=4`, {
