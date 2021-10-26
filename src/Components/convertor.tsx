@@ -8,35 +8,36 @@ import '../Styles/Convertor.scss'
 import Spinner from '../Modules/Spinner'
 import Select from './Select'
 import RateSection from './rateSection'
+import { usaFlag, eurFlag, neutralFlag } from '../countryData'
 
 interface Currency {
-    currency_name: string
-    is_obsolete: boolean
-    iso: string
-    flag?: string
+  currency_name: string
+  is_obsolete: boolean
+  iso: string
+  flag?: string
 }
 
 interface Rate {
-    'quotecurrency': string
-    'mid': Number
+  'quotecurrency': string
+  'mid': Number
 }
 
 interface CurrencyToAndFrom {
-    'name': string
-    'curr': string
+  'name': string
+  'curr': string
 }
 
 interface Currencies {
-    'currencies': Currency[]
+  'currencies': Currency[]
 }
 
 interface respponse {
-    'currencies' : {
-        [key: string]: {
-            'currency_name': string
-        }
-    },
-    'flag' : string
+  'currencies': {
+    [key: string]: {
+      'currency_name': string
+    }
+  },
+  'flag': string
 
 }
 
@@ -70,23 +71,28 @@ function Convertor () {
             // code eslint to the country ISO in the REST Countries API,
             // then return the currency object along with the flag image url.
             // No flag means a placeholder is added.
-            const currenciesWithFlags : any = currencies.map((obj: Currency) => {
+            const currenciesWithFlags: any = currencies.map((obj: Currency) => {
               const flagFound = countries.find((country: { currencies: {} }) => {
                 if (country.currencies) return Object.keys(country.currencies)[0] === obj.iso
                 return null
               })
 
-              if (obj.currency_name === 'US Dollar') return { ...obj, flag: countries[108].flag }
-              if (obj.currency_name === 'Euro') return { ...obj, flag: countries[97].flag }
+              if (obj.currency_name === 'US Dollar') return { ...obj, flag: usaFlag }
+              if (obj.currency_name === 'Euro') return { ...obj, flag: eurFlag }
               if (flagFound) return { ...obj, flag: flagFound.flag }
-              if (!flagFound) return { ...obj, flag: '🇺🇳' }
+              if (!flagFound) return { ...obj, flag: neutralFlag }
             })
 
             // Set the currency list for the populated filtered countries with flags
             setCurrencies(currenciesWithFlags)
           })
-          .catch((err) => {
-            console.log(err)
+          .catch(() => {
+            const currencyNoFlags = currencies.map((obj: Currency) => {
+              if (obj.currency_name === 'US Dollar') return { ...obj, flag: usaFlag }
+              if (obj.currency_name === 'Euro') return { ...obj, flag: eurFlag }
+              return { ...obj, flag: neutralFlag }
+            })
+            setCurrencies(currencyNoFlags)
           })
       })
       .catch((err) => {
@@ -133,20 +139,20 @@ function Convertor () {
   return (
     <div className="convertor">
       <div className="convertor-form">
-        <Select handleToSelect={handleToSelect} handleInputChange={handleInputChange} handleFromSelect={handleFromSelect} currencies ={currencies} />
+        <Select handleToSelect={handleToSelect} handleInputChange={handleInputChange} handleFromSelect={handleFromSelect} currencies={currencies} />
       </div>
       <div className="convertor-section">
         <button type="button" onClick={(e) => handleConvert(e)} disabled={!(amount > 0)}>{amount ? 'Convert' : '...'}</button>
         <div className="convertor-section-rate">
-             {rate.mid > 0 &&
-            <RateSection amount={amount} rate={rate} loading={loading} currTo={currTo} currFrom={currFrom}/>
-             }
+          {rate.mid > 0 &&
+            <RateSection amount={amount} rate={rate} loading={loading} currTo={currTo} currFrom={currFrom} />
+          }
         </div>
-      {currencies.length < 1 && (
-        <div className="Loading">
+        {currencies.length < 1 && (
+          <div className="Loading">
             <Spinner />
-        </div>
-      )}
+          </div>
+        )}
 
       </div>
     </div>
