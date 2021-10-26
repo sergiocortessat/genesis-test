@@ -164,7 +164,9 @@ function Convertor () {
             : (
             <Spinner />
               )} */}
+             {rate.mid > 0 &&
             <RateSection amount={amount} rate={rate} loading={loading} currTo={currTo} currFrom={currFrom}/>
+             }
         </div>
       {currencies.length < 1 && (
         <div className="Loading">
