@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import '../Styles/Convertor.scss'
 import Spinner from '../Modules/Spinner'
+import Select from './Select'
 
 interface Currency {
     currency_name: string
@@ -76,7 +77,8 @@ function Convertor () {
 
               if (obj.currency_name === 'US Dollar') return { ...obj, flag: countries[108].flag }
               if (obj.currency_name === 'Euro') return { ...obj, flag: countries[97].flag }
-              flagFound ? { ...obj, flag: flagFound.flag } : { ...obj, flag: '🇺🇳' }
+              if (flagFound) return { ...obj, flag: flagFound.flag }
+              if (!flagFound) return { ...obj, flag: '🇺🇳' }
             })
 
             // Set the currency list for the populated filtered countries with flags
@@ -130,7 +132,8 @@ function Convertor () {
   return (
     <div className="convertor">
       <div className="convertor-form">
-        <form>
+        <Select handleToSelect={handleToSelect} handleInputChange={handleInputChange} handleFromSelect={handleFromSelect} currencies ={currencies} />
+        {/* <form>
           <input type="number" placeholder=" Amount" min="1" step="any" onChange={(e) => handleInputChange(e.target.value)} />
           <select onChange={(e) => handleToSelect(e.target.value)} disabled={(currencies.length < 1)}>
             {currencies.map((currency: any) => <option key={currency.iso} selected={currency.iso === 'USD'} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency.currency_name}`}</option>)}
@@ -138,7 +141,7 @@ function Convertor () {
           <select onChange={(e) => handleFromSelect(e.target.value)} disabled={(currencies.length < 1)}>
             {currencies.map((currency: any) => <option key={currency.iso} selected={currency.iso === 'EUR'} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency.currency_name}`}</option>)}
           </select>
-        </form>
+        </form> */}
       </div>
       <div className="convertor-section">
         <button type="button" onClick={(e) => handleConvert(e)} disabled={!(amount > 0)}>{amount ? 'Convert' : '...'}</button>
