@@ -134,36 +134,10 @@ function Convertor () {
     <div className="convertor">
       <div className="convertor-form">
         <Select handleToSelect={handleToSelect} handleInputChange={handleInputChange} handleFromSelect={handleFromSelect} currencies ={currencies} />
-        {/* <form>
-          <input type="number" placeholder=" Amount" min="1" step="any" onChange={(e) => handleInputChange(e.target.value)} />
-          <select onChange={(e) => handleToSelect(e.target.value)} disabled={(currencies.length < 1)}>
-            {currencies.map((currency: any) => <option key={currency.iso} selected={currency.iso === 'USD'} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency.currency_name}`}</option>)}
-          </select>
-          <select onChange={(e) => handleFromSelect(e.target.value)} disabled={(currencies.length < 1)}>
-            {currencies.map((currency: any) => <option key={currency.iso} selected={currency.iso === 'EUR'} value={[currency.iso, currency.currency_name]}>{`  ${currency.flag}  ${currency.iso} - ${currency.currency_name}`}</option>)}
-          </select>
-        </form> */}
       </div>
       <div className="convertor-section">
         <button type="button" onClick={(e) => handleConvert(e)} disabled={!(amount > 0)}>{amount ? 'Convert' : '...'}</button>
         <div className="convertor-section-rate">
-          {/* {!loading
-            ? (
-            <>
-              <p>
-                {amount.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
-                <span>{`${currFrom.name} = `}</span>
-              </p>
-              {' '}
-              <p>
-                {rate.mid.toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
-                <span>{`${currTo.name}`}</span>
-              </p>
-            </>
-              )
-            : (
-            <Spinner />
-              )} */}
              {rate.mid > 0 &&
             <RateSection amount={amount} rate={rate} loading={loading} currTo={currTo} currFrom={currFrom}/>
              }
