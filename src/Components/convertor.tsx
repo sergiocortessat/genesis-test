@@ -41,6 +41,14 @@ interface respponse {
 
 }
 
+// set interface XE exchange convertor response
+interface XEresponse {
+  'to' : Array<{
+    quotecurrency: string
+    mid: Number
+  }>
+}
+
 // Interface for axios.get respective
 
 function Convertor () {
@@ -104,13 +112,15 @@ function Convertor () {
     // Once the button is clicked, a convertor API call is triggered with To and From currencyes with amount
     e.preventDefault()
     setLoading(true)
-    axios.get(`https://xecdapi.xe.com/v1/convert_from.json/?from=${currFrom.curr}&to=${currTo.curr}&amount=${amount}&decimal_places=4`, {
+    axios.get<XEresponse>(`https://xecdapi.xe.com/v1/convert_from.json/?from=${currFrom.curr}&to=${currTo.curr}&amount=${amount}&decimal_places=4`, {
       auth: {
         username: `${REACT_APP_API_KEY_USER}`,
         password: `${REACT_APP_API_KEY_PASSWORD}`
       }
-    }).then((resp: any) => {
-      setRate(resp.data.to[0])
+    }).then((resp) => {
+      console.log(resp)
+      const { to } = resp.data
+      setRate(to[0])
     }).catch((err) => {
       console.log(err)
     })
@@ -119,19 +129,19 @@ function Convertor () {
     }, 1000)
   }
 
-  const handleToSelect = (e: any) => {
+  const handleToSelect = (e: string) => {
     const [curr, name] = e.split(',')
     setCurrFrom({ name, curr })
     setRate({ quotecurrency: '', mid: 0 })
   }
 
-  const handleFromSelect = (e: any) => {
+  const handleFromSelect = (e: string) => {
     const [curr, name] = e.split(',')
     setCurrTo({ name, curr })
     setRate({ quotecurrency: '', mid: 0 })
   }
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e:string) => {
     setAmount(Number(e))
     setRate({ quotecurrency: '', mid: 0 })
   }
