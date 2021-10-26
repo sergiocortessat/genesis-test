@@ -18,7 +18,7 @@
         padding: 1rem;
         width: 100%;
         height: 60px;
-        background-color: white;
+        background-color: #fff;
         border: 1px solid #ccc;
         border-radius: 7px;
       }
@@ -55,6 +55,11 @@
       border: none;
       border-radius: 7px;
       transition: 0.3s ease;
+    }
+
+    .button-dark {
+      background-color: rgb(152, 93, 175);
+      color: #fff;
     }
 
     button:disabled {
