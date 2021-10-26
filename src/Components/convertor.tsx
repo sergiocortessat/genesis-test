@@ -7,6 +7,7 @@ import axios from 'axios'
 import '../Styles/Convertor.scss'
 import Spinner from '../Modules/Spinner'
 import Select from './Select'
+import RateSection from './rateSection'
 
 interface Currency {
     currency_name: string
@@ -146,7 +147,7 @@ function Convertor () {
       <div className="convertor-section">
         <button type="button" onClick={(e) => handleConvert(e)} disabled={!(amount > 0)}>{amount ? 'Convert' : '...'}</button>
         <div className="convertor-section-rate">
-          {!loading
+          {/* {!loading
             ? (
             <>
               <p>
@@ -162,7 +163,8 @@ function Convertor () {
               )
             : (
             <Spinner />
-              )}
+              )} */}
+            <RateSection amount={amount} rate={rate} loading={loading} currTo={currTo} currFrom={currFrom}/>
         </div>
       {currencies.length < 1 && (
         <div className="Loading">
