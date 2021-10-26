@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-use-before-define */
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react'
@@ -9,7 +11,7 @@ interface Currency {
     currency_name: string
     is_obsolete: boolean
     iso: string
-    flag: string
+    flag?: string
 }
 
 interface Rate {
@@ -21,6 +23,22 @@ interface CurrencyToAndFrom {
     'name': string
     'curr': string
 }
+
+interface Currencies {
+    'currencies': Currency[]
+}
+
+interface respponse {
+    'currencies' : {
+        [key: string]: {
+            'currency_name': string
+        }
+    },
+    'flag' : string
+
+}
+
+// Interface for axios.get respective
 
 function Convertor () {
   const [currencies, setCurrencies] = useState<Currency[] | []>([])
@@ -34,33 +52,31 @@ function Convertor () {
   const { REACT_APP_API_KEY_PASSWORD } = process.env
 
   useEffect(() => {
-    axios.get('https://xecdapi.xe.com/v1/currencies', {
+    axios.get<Currencies>('https://xecdapi.xe.com/v1/currencies', {
       auth: {
         username: `${REACT_APP_API_KEY_USER}`,
         password: `${REACT_APP_API_KEY_PASSWORD}`
       }
     })
-      .then((resp: any) => {
-        const { currencies } = resp.data
-        axios.get('https://restcountries.com/v3.1/all')
-          .then((res:any) => {
+      .then((resp) => {
+        const currencies = resp.data.currencies
+        axios.get<respponse[]>('https://restcountries.com/v3.1/all')
+          .then((res) => {
             const countries = res.data
 
             // Map over the currencies, and match their respective ISO
             // code eslint to the country ISO in the REST Countries API,
             // then return the currency object along with the flag image url.
             // No flag means a placeholder is added.
-            const currenciesWithFlags: any = currencies.map((obj: Currency) => {
+            const currenciesWithFlags : any = currencies.map((obj: Currency) => {
               const flagFound = countries.find((country: { currencies: {} }) => {
                 if (country.currencies) return Object.keys(country.currencies)[0] === obj.iso
-                return ''
+                return null
               })
 
               if (obj.currency_name === 'US Dollar') return { ...obj, flag: countries[108].flag }
               if (obj.currency_name === 'Euro') return { ...obj, flag: countries[97].flag }
-              if (!flagFound) return { ...obj, flag: '🇺🇳' }
-              if (flagFound) return { ...obj, flag: flagFound.flag }
-              return currenciesWithFlags
+              flagFound ? { ...obj, flag: flagFound.flag } : { ...obj, flag: '🇺🇳' }
             })
 
             // Set the currency list for the populated filtered countries with flags
