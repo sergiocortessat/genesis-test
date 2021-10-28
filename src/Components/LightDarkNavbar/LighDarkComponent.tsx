@@ -17,5 +17,5 @@ export default function LightDarkToggle () {
     setDarkMode(!darkMode)
   }
 
-  return [darkMode, toggleDarkMode]
+  return { darkMode, toggleDarkMode }
 }
