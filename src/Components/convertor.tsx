@@ -66,8 +66,8 @@ function Convertor () {
   useEffect(() => {
     axios.get<Currencies>('https://xecdapi.xe.com/v1/currencies', {
       auth: {
-        username: `${REACT_APP_API_KEY_USER}`,
-        password: `${REACT_APP_API_KEY_PASSWORD}`
+        username: 'freelancer21981605',
+        password: 'tl6tq02poabhq75a3rgsk6mo2v'
       }
     })
       .then((resp) => {
