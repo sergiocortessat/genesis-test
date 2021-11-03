@@ -42,6 +42,8 @@ interface respponse {
 
 }
 
+// interface for
+
 // set interface XE exchange convertor response
 interface XEresponse {
   'to' : Array<{
@@ -80,16 +82,14 @@ function Convertor () {
             // code eslint to the country ISO in the REST Countries API,
             // then return the currency object along with the flag image url.
             // No flag means a placeholder is added.
-            const currenciesWithFlags: any = currencies.map((obj: Currency) => {
+            const currenciesWithFlags = currencies.map((obj: Currency) => {
               const flagFound = countries.find((country: { currencies: {} }) => {
                 if (country.currencies) return Object.keys(country.currencies)[0] === obj.iso
-                return null
               })
 
               if (obj.currency_name === 'US Dollar') return { ...obj, flag: usaFlag }
               if (obj.currency_name === 'Euro') return { ...obj, flag: eurFlag }
-              if (flagFound) return { ...obj, flag: flagFound.flag }
-              if (!flagFound) return { ...obj, flag: neutralFlag }
+              return flagFound ? { ...obj, flag: flagFound.flag } : { ...obj, flag: neutralFlag }
             })
 
             // Set the currency list for the populated filtered countries with flags
