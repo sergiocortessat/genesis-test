@@ -1,2 +1,6 @@
-src/service-worker.js
-src/serviceWorkerRegistration.js
+*.css
+*.svg
+*.eslintrc.json
+package-lock.json
+package.json
+tsconfig.json

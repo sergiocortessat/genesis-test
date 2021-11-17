@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
-import React from 'react'
-import Spinner from '../Modules/Spinner'
+import React from 'react';
+import Spinner from '../Modules/Spinner';
 
 interface CurrencyToAndFrom {
     'name': string
@@ -9,7 +9,7 @@ interface CurrencyToAndFrom {
 
 interface Rate {
     'quotecurrency': string
-    'mid': Number
+    'mid': number
 }
 
 interface IProps {
@@ -20,9 +20,10 @@ interface IProps {
     currTo: CurrencyToAndFrom
 }
 
-const rateSection = ({ loading, amount, currFrom, currTo, rate }: IProps) => {
-  return (
-      <>
+const rateSection = ({
+  loading, amount, currFrom, currTo, rate,
+}: IProps) => (
+  <>
     {!loading
       ? (
         <>
@@ -36,12 +37,11 @@ const rateSection = ({ loading, amount, currFrom, currTo, rate }: IProps) => {
             <span>{`${currTo.name}`}</span>
           </p>
         </>
-        )
+      )
       : (
         <Spinner />
-        )}
-          </>
-  )
-}
+      )}
+  </>
+);
 
-export default rateSection
+export default rateSection;
